@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BannerImg from './assets/IN-en-20240205-popsignuptwoweeks-perspective_alpha_website_large.jpg'
 import Header from './Header'
 import { validate } from '../utils/validate'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../utils/firebase';
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 
 const Login = () => {
     const [showSignIn, setSignUp] = useState(true)
@@ -13,6 +16,15 @@ const Login = () => {
     const [userName, setname] = useState('')
     const [message, setmessage] = useState('');
     const [messageForName, setMessageForName] = useState(true)
+    const navigate = useNavigate()
+
+    const selector = useSelector(state => state.user)
+    console.log(selector)
+
+    useEffect(() => {
+        checkUserISLoginOrNot()
+    }, [selector])
+
     const setEmailFun = (e) => {
         setEmail(e.target.value)
 
@@ -39,15 +51,16 @@ const Login = () => {
         console.log(email, password, userName)
         const msg = validate(email, password, userName, showSignIn)
         setmessage(msg)
-
+        localStorage.setItem('myData', JSON.stringify(userName));
         if (msg) return;
 
         if (!showSignIn) {
-            createUserWithEmailAndPassword(auth, email, password)
+            createUserWithEmailAndPassword(auth, email, password, userName)
                 .then((userCredential) => {
                     // Signed up 
                     const user = userCredential.user;
                     console.log(user)
+                    navigate("/browse")
                     // ...
                 })
                 .catch((error) => {
@@ -62,6 +75,8 @@ const Login = () => {
                     // Signed in 
                     const user = userCredential.user;
                     console.log(user)
+                    navigate("/browse")
+
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -71,6 +86,15 @@ const Login = () => {
         }
 
     }
+
+
+
+    function checkUserISLoginOrNot() {
+        if (selector != null) {
+            navigate("/browse")
+        }
+    }
+
     return (
 
         <>
