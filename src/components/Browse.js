@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import { signOut } from "firebase/auth";
 import { auth } from '../utils/firebase';
 import { removeUser } from '../utils/userSlice';
-import { options } from '../utils/constant';
+import { addNOwPlayingMovies } from '../utils/movieSlice';
+import useNowPlayingMovies from './hooks/usemivielist';
 
 const Browse = () => {
     const Dispatch = useDispatch()
@@ -24,11 +25,8 @@ const Browse = () => {
             // An error happened.
         });
     }
-
-
-
     useEffect(() => {
-        getNOwPlayingMovies()
+
         if (userData) {
             navigate('/browse')
         }
@@ -38,12 +36,8 @@ const Browse = () => {
     }, [userData])
 
     //api call
+    useNowPlayingMovies()
 
-    const getNOwPlayingMovies = async () => {
-        const list = await fetch('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', options);
-        const response = await list.json();
-        console.log(response)
-    }
 
     return (<>
         <div className='bg-black w-[100%]'>
