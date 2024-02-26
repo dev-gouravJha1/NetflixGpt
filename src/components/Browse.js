@@ -38,7 +38,7 @@ const Browse = () => {
     }, [userData])
 
     //api call
-    useNowPlayingMovies()
+    useNowPlayingMovies("now_playing")
 
 
     return (<>
