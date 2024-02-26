@@ -7,6 +7,8 @@ import { auth } from '../utils/firebase';
 import { removeUser } from '../utils/userSlice';
 import { addNOwPlayingMovies } from '../utils/movieSlice';
 import useNowPlayingMovies from './hooks/usemivielist';
+import Maincontainer from './maincontainer';
+import SecondaryContainer from './secondaryContainer';
 
 const Browse = () => {
     const Dispatch = useDispatch()
@@ -51,8 +53,9 @@ const Browse = () => {
                     <button className='bg-white p-3 rounded-sm' onClick={handleSignOut}>Logout</button>
                 </div>
             </div>
-            <div className='absolute top-20'>Browse</div>
         </div>
+        <Maincontainer />
+        <SecondaryContainer />
     </>
 
     )
